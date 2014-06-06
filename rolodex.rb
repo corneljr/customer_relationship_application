@@ -24,13 +24,13 @@ class Rolodex
 	def display_attribute(attribute)
 		case attribute
 		when 1 
-			contacts.each {|con| puts con.first_name}
+			contacts.each {|con| puts con.first_name.capitalize!}
 		when 2
-			contacts.each {|con| puts con.last_name}
+			contacts.each {|con| puts con.last_name.capitalize!}
 		when 3
-			contacts.each {|con| puts con.email}
+			contacts.each {|con| puts con.email.capitalize!}
 		when 4
-			contacts.each {|con| puts con.note}
+			contacts.each {|con| puts con.note.capitalize!}
 		end
 	end
 end

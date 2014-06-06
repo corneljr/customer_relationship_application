@@ -3,12 +3,13 @@ require './rolodex'
 
 
 class CRM
-	def initialize
+	def initialize(name)
+		@name = name
 		@rolodex = Rolodex.new
 	end
 
 	def print_main_menu
-		puts "Main Menu"
+		puts "\nMain Menu:"
 		puts "[1] Add a new contact"
 		puts "[2] Modify an existing contact"
 		puts "[3] Delete a contact"
@@ -17,6 +18,23 @@ class CRM
 		puts "[6] Exit"
 		puts "Enter a number:"
 	end
+
+	def print_attribute_list 
+		puts "Which attribute?"
+		puts "[1] First name"
+		puts "[2] Last name"
+		puts "[3] Email"
+		puts "[4] Notes"
+	end
+
+	def print_contact_list
+		i = 1
+		@rolodex.contacts.each do |contact|
+			puts "[#{i}] #{contact.first_name.capitalize!} #{contact.last_name.capitalize!}"
+			i += 1
+		end
+	end
+
 
 	def main_menu
 		print_main_menu
@@ -46,10 +64,13 @@ class CRM
 		print "Enter a note: "
 		note = gets.chomp.downcase
 
-		puts "Contact added"
-
 		contact = Contact.new(first_name,last_name,email,note)
 		@rolodex.add_contact(contact)
+
+		separator
+		puts "Contact added"
+		separator
+
 		main_menu
 	end
 
@@ -64,56 +85,52 @@ class CRM
 			when 2 then contact.last_name = change
 			when 3 then contact.email = change
 			when 4 then contact.notes = change
+			else puts "Invalid Option"; modify_contact;
 		end
+		separator
+		puts "Contact has been modified"
+		separator
+		main_menu
+	end
 
-		puts "Contact has been modified:"
-		display_contacts
+	def separator
+		puts "------------------------------------"
 	end
 
 	def select_contact(action)
 		puts "Which contact would you like to #{action}?"
-		i = 1
-		@rolodex.contacts.each do |contact|
-			puts "[#{i}] #{contact.first_name.capitalize} #{contact.last_name.capitalize}"
-			i += 1
-		end
+		print_contact_list
 		contact = @rolodex.find(gets.chomp.to_i - 1)
-		print "Are you sure you want to #{action} #{contact.first_name} #{contact.last_name}?"
-		response = gets.chomp
-		return main_menu if response == "no"
 		contact
 	end
 
-	def delelete_contact
+	def delete_contact
 		contact = select_contact("delete")
 		@rolodex.delete_contact(contact)
-		puts "Contact deleted."
+		separator; puts "Contact deleted.";separator
 		main_menu
 	end
 
 	def display_contacts
+		clear_screen
+		separator
 		@rolodex.display_contacts
+		separator
 		main_menu
-	end
-
-	def print_attribute_list 
-		puts "Which attribute would you like to see?"
-		puts "[1] First name"
-		puts "[2] Last name"
-		puts "[3] Email"
-		puts "[4] Notes"
 	end
 
 	def display_attribute
+		clear_screen
 		print_attribute_list
 		choice = gets.chomp.to_i
+		separator
 		@rolodex.display_attribute(choice)
-		puts "Press ENTER when finished"
+		separator
 		main_menu
 	end
 
-	def self.run
-		crm = CRM.new
+	def self.run(name)
+		crm = CRM.new(name)
 		crm.main_menu
 	end
 
@@ -122,7 +139,7 @@ class CRM
 	end
 end
 
-CRM.run()
+CRM.run("name")
 
 
 

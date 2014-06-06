@@ -18,7 +18,9 @@ class Rolodex
 	end
 
 	def display_contacts
+		puts "Im in here...."
 		@contacts.each {|contact| puts "#{contact.first_name.capitalize} #{contact.last_name.capitalize}, Email:#{contact.email}, Notes: #{contact.note}"}
+
 	end
 
 	def display_attribute(attribute)

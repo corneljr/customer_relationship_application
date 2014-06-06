@@ -19,7 +19,6 @@ class CRM
 	end
 
 	def main_menu
-		clear_screen
 		print_main_menu
 		selection = gets.to_i
 		call_option(selection)
@@ -67,11 +66,21 @@ class CRM
 		end
 	end
 
-	def delete_contact
-		print "Please enter the last name of the contact you would like to delete."
-		last_name = gets.chomp
-		contact = @rolodex.find(last_name)
-		print "Are you sure you want to delete #{contact.first_name} #{contact.last_name}?"
+	def select_contact(action)
+		puts "Which contact would you like to #{action}?"
+		i = 1
+		@rolodex.contacts.each do |contact|
+			puts "[#{i}] #{contact.first_name.capitalize} #{contact.last_name.capitalize}"
+			i += 1
+		end
+		contact = @rolodex.contacts[gets.chomp.to_i - 1]
+		print "Are you sure you want to #{action} #{contact.first_name} #{contact.last_name}?"
+
+	end
+
+	def delelete_contact
+		contact = select_contact("delete")
+		
 		response = gets.chomp
 		@rolodex.delete_contact(contact)
 		puts "Contact deleted."
@@ -91,6 +100,7 @@ class CRM
 		puts "[4] Notes"
 		choice = gets.chomp.to_i
 		@rolodex.display_attribute(choice)
+		puts "Press ENTER when finished"
 		main_menu
 	end
 
@@ -103,9 +113,6 @@ class CRM
 		puts "\e[H\e[2J"
 	end
 end
-
-
-
 
 CRM.run()
 

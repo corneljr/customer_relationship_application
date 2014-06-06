@@ -8,7 +8,7 @@ class Rolodex
 		@contacts << contact
 	end
 
-	def find(index)
+	def find_contact(index)
 		contacts[index]
 	end
 

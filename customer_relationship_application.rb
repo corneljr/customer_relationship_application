@@ -100,7 +100,7 @@ class CRM
 	def select_contact(action)
 		puts "Which contact would you like to #{action}?"
 		print_contact_list
-		contact = @rolodex.find(gets.chomp.to_i - 1)
+		contact = @rolodex.find_contact(gets.chomp.to_i - 1)
 		contact
 	end
 

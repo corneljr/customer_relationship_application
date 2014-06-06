@@ -8,9 +8,8 @@ class Rolodex
 		@contacts << contact
 	end
 
-	def find(last_name)
-		contact = contacts.find {|con| con.last_name == last_name}
-		contact
+	def find(index)
+		contacts[index]
 	end
 
 	def delete_contact(contact)
@@ -18,7 +17,6 @@ class Rolodex
 	end
 
 	def display_contacts
-		puts "Im in here...."
 		@contacts.each {|contact| puts "#{contact.first_name.capitalize} #{contact.last_name.capitalize}, Email:#{contact.email}, Notes: #{contact.note}"}
 
 	end

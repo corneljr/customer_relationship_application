@@ -54,16 +54,20 @@ class CRM
 	end
 
 	def modify_contact
-		print "Please enter the last name of the contact you would like to modify."
-		contact = @rolodex.find(gets.chomp)
-		print "Are you sure you want to modify \"#{contact.first_name.capitalize} #{contact.last_name.capitalize}\"?"
-		response = gets.chomp
-		if response == "yes"
-			@rolodex.delete_contact(contact)
-			add_contact
-		else
-			main_menu
+		contact = select_contact("modify")
+		print_attribute_list
+		selection = gets.chomp.to_i
+		puts "What would you like to change it to?"
+		change = gets.chomp
+		case selection
+			when 1 then contact.first_name = change
+			when 2 then contact.last_name = change
+			when 3 then contact.email = change
+			when 4 then contact.notes = change
 		end
+
+		puts "Contact has been modified:"
+		display_contacts
 	end
 
 	def select_contact(action)
@@ -73,15 +77,15 @@ class CRM
 			puts "[#{i}] #{contact.first_name.capitalize} #{contact.last_name.capitalize}"
 			i += 1
 		end
-		contact = @rolodex.contacts[gets.chomp.to_i - 1]
+		contact = @rolodex.find(gets.chomp.to_i - 1)
 		print "Are you sure you want to #{action} #{contact.first_name} #{contact.last_name}?"
-
+		response = gets.chomp
+		return main_menu if response == "no"
+		contact
 	end
 
 	def delelete_contact
 		contact = select_contact("delete")
-		
-		response = gets.chomp
 		@rolodex.delete_contact(contact)
 		puts "Contact deleted."
 		main_menu
@@ -92,12 +96,16 @@ class CRM
 		main_menu
 	end
 
-	def display_attribute
+	def print_attribute_list 
 		puts "Which attribute would you like to see?"
 		puts "[1] First name"
 		puts "[2] Last name"
 		puts "[3] Email"
 		puts "[4] Notes"
+	end
+
+	def display_attribute
+		print_attribute_list
 		choice = gets.chomp.to_i
 		@rolodex.display_attribute(choice)
 		puts "Press ENTER when finished"
